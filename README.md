@@ -1,30 +1,14 @@
 # Impact de l'IA
 
-*Automatically synced with your [v0.dev](https://v0.dev) deployments*
+L'impact de l'IA sur votre métier
+Participez à notre évaluation pour comprendre comment l'Intelligence Artificielle transforme votre secteur d'activité. Découvrez votre positionnement par rapport aux autres professionnels de votre domaine.
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/kanamo2525s-projects/v0-impact-de-l-ia)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.dev-black?style=for-the-badge)](https://v0.dev/chat/projects/f6M7QLmjlIS)
+Pourquoi participer ?
+Évaluation Personnalisée
+Répondez à 7 questions ciblées pour évaluer l'impact de l'IA sur vos tâches, compétences et conditions de travail.
 
-## Overview
+Comparaison Métier
+Comparez vos réponses avec celles d'autres professionnels de votre secteur pour identifier les tendances communes.
 
-This repository will stay in sync with your deployed chats on [v0.dev](https://v0.dev).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.dev](https://v0.dev).
-
-## Deployment
-
-Your project is live at:
-
-**[https://vercel.com/kanamo2525s-projects/v0-impact-de-l-ia](https://vercel.com/kanamo2525s-projects/v0-impact-de-l-ia)**
-
-## Build your app
-
-Continue building your app on:
-
-**[https://v0.dev/chat/projects/f6M7QLmjlIS](https://v0.dev/chat/projects/f6M7QLmjlIS)**
-
-## How It Works
-
-1. Create and modify your project using [v0.dev](https://v0.dev)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+Visualisation Interactive
+Explorez vos résultats à travers des graphiques interactifs et des analyses détaillées de l'impact de l'IA.
