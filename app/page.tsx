@@ -9,11 +9,12 @@ import EvaluationForm from "@/components/evaluation-form"
 import ResultsVisualization from "@/components/results-visualization"
 import ExposureForm from "@/components/exposure-form"
 import ExposureResults from "@/components/exposure-results"
+import ComparativeDashboard from "@/components/comparative-dashboard"
 import Dashboard from "@/components/dashboard"
 
 export default function HomePage() {
   const [currentView, setCurrentView] = useState<
-    "home" | "evaluation" | "results" | "exposure" | "exposure-results" | "dashboard"
+    "home" | "evaluation" | "results" | "exposure" | "exposure-results" | "comparative" | "dashboard"
   >("home")
   const [evaluationData, setEvaluationData] = useState(null)
   const [exposureData, setExposureData] = useState(null)
@@ -26,6 +27,11 @@ export default function HomePage() {
   const handleExposureComplete = (data: any) => {
     setExposureData(data)
     setCurrentView("exposure-results")
+  }
+
+  const handleCompareResults = (data: any) => {
+    setExposureData(data)
+    setCurrentView("comparative")
   }
 
   useEffect(() => {
@@ -75,7 +81,13 @@ export default function HomePage() {
   }
 
   if (currentView === "exposure-results") {
-    return <ExposureResults data={exposureData} onBack={() => setCurrentView("home")} />
+    return (
+      <ExposureResults data={exposureData} onBack={() => setCurrentView("home")} onCompare={handleCompareResults} />
+    )
+  }
+
+  if (currentView === "comparative") {
+    return <ComparativeDashboard data={exposureData} onBack={() => setCurrentView("exposure-results")} />
   }
 
   if (currentView === "dashboard") {

@@ -5,12 +5,13 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
-import { ArrowLeft, Download, Share2, TrendingUp, AlertTriangle, CheckCircle } from "lucide-react"
+import { ArrowLeft, Download, Share2, TrendingUp, AlertTriangle, CheckCircle, BarChart3 } from "lucide-react"
 import html2canvas from "html2canvas"
 
 interface ExposureResultsProps {
   data: any
   onBack: () => void
+  onCompare?: (data: any) => void
 }
 
 // Pondérations selon le modèle défini
@@ -28,7 +29,7 @@ const dimensionLabels = {
   conditions: "Conditions de travail",
 }
 
-export default function ExposureResults({ data, onBack }: ExposureResultsProps) {
+export default function ExposureResults({ data, onBack, onCompare }: ExposureResultsProps) {
   const [selectedJob] = useState(data?.job || "Métier non spécifié")
   const [selectedDepartment] = useState(data?.department || "Département non spécifié")
 
@@ -64,6 +65,12 @@ export default function ExposureResults({ data, onBack }: ExposureResultsProps) 
 
   const scoreLevel = getScoreLevel(globalScore)
   const ScoreLevelIcon = scoreLevel.icon
+
+  const handleCompare = () => {
+    if (onCompare) {
+      onCompare({ ...data, globalScore, scores })
+    }
+  }
 
   const RadarChart = () => {
     const size = 300
@@ -299,6 +306,10 @@ export default function ExposureResults({ data, onBack }: ExposureResultsProps) 
               </p>
             </div>
             <div className="flex space-x-2">
+              <Button variant="outline" size="sm" onClick={handleCompare}>
+                <BarChart3 className="h-4 w-4 mr-2" />
+                Comparer
+              </Button>
               <Button variant="outline" size="sm" onClick={handleShare}>
                 <Share2 className="h-4 w-4 mr-2" />
                 Partager
