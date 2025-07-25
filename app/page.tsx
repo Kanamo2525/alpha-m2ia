@@ -4,24 +4,35 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { BarChart3, Users, TrendingUp } from "lucide-react"
+import { BarChart3, Users, TrendingUp, Calculator } from "lucide-react"
 import EvaluationForm from "@/components/evaluation-form"
 import ResultsVisualization from "@/components/results-visualization"
+import ExposureForm from "@/components/exposure-form"
+import ExposureResults from "@/components/exposure-results"
 import Dashboard from "@/components/dashboard"
 
 export default function HomePage() {
-  const [currentView, setCurrentView] = useState<"home" | "evaluation" | "results" | "dashboard">("home")
+  const [currentView, setCurrentView] = useState<
+    "home" | "evaluation" | "results" | "exposure" | "exposure-results" | "dashboard"
+  >("home")
   const [evaluationData, setEvaluationData] = useState(null)
+  const [exposureData, setExposureData] = useState(null)
 
   const handleEvaluationComplete = (data: any) => {
     setEvaluationData(data)
     setCurrentView("results")
   }
 
+  const handleExposureComplete = (data: any) => {
+    setExposureData(data)
+    setCurrentView("exposure-results")
+  }
+
   useEffect(() => {
     // Vérifier si des résultats sont partagés via URL
     const urlParams = new URLSearchParams(window.location.search)
     const resultsParam = urlParams.get("results")
+    const exposureParam = urlParams.get("exposure")
 
     if (resultsParam) {
       try {
@@ -35,6 +46,20 @@ export default function HomePage() {
         console.error("Erreur lors du décodage des résultats partagés:", error)
       }
     }
+
+    if (exposureParam) {
+      try {
+        const sharedData = JSON.parse(atob(exposureParam))
+        setExposureData({
+          job: sharedData.job,
+          department: sharedData.department,
+          answers: Object.fromEntries(Object.entries(sharedData.scores).map(([key, value]) => [key, value.toString()])),
+        })
+        setCurrentView("exposure-results")
+      } catch (error) {
+        console.error("Erreur lors du décodage des résultats d'exposition partagés:", error)
+      }
+    }
   }, [])
 
   if (currentView === "evaluation") {
@@ -43,6 +68,14 @@ export default function HomePage() {
 
   if (currentView === "results") {
     return <ResultsVisualization data={evaluationData} onBack={() => setCurrentView("home")} />
+  }
+
+  if (currentView === "exposure") {
+    return <ExposureForm onComplete={handleExposureComplete} onBack={() => setCurrentView("home")} />
+  }
+
+  if (currentView === "exposure-results") {
+    return <ExposureResults data={exposureData} onBack={() => setCurrentView("home")} />
   }
 
   if (currentView === "dashboard") {
@@ -73,10 +106,10 @@ export default function HomePage() {
             Participez à notre évaluation pour comprendre comment l'Intelligence Artificielle transforme votre secteur
             d'activité. Découvrez votre positionnement par rapport aux autres professionnels de votre domaine.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 justify-center">
             <Button
               size="lg"
-              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3"
               onClick={() => window.open("https://next.bluenove.io/survey/ia-groupe-alpha", "_blank")}
             >
               Je participe à l'enquête
@@ -84,7 +117,7 @@ export default function HomePage() {
             <Button
               size="lg"
               variant="outline"
-              className="px-8 py-3 border-blue-600 text-blue-600 hover:bg-blue-50 bg-transparent"
+              className="px-6 py-3 border-blue-600 text-blue-600 hover:bg-blue-50 bg-transparent"
               onClick={() => setCurrentView("evaluation")}
             >
               J'évalue l'impact en 2 minutes
@@ -92,7 +125,15 @@ export default function HomePage() {
             <Button
               size="lg"
               variant="outline"
-              className="px-8 py-3 border-blue-600 text-blue-600 hover:bg-blue-50 bg-transparent"
+              className="px-6 py-3 border-green-600 text-green-600 hover:bg-green-50 bg-transparent"
+              onClick={() => setCurrentView("exposure")}
+            >
+              Mon score d'exposition IA
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="px-6 py-3 border-blue-600 text-blue-600 hover:bg-blue-50 bg-transparent"
               onClick={() => setCurrentView("dashboard")}
             >
               Je m'informe des résultats
@@ -104,8 +145,8 @@ export default function HomePage() {
       {/* Features Section */}
       <section className="py-16 px-4 bg-white">
         <div className="container mx-auto max-w-6xl">
-          <h3 className="text-3xl font-bold text-center text-gray-900 mb-12">Pourquoi participer ?</h3>
-          <div className="grid md:grid-cols-3 gap-8">
+          <h3 className="text-3xl font-bold text-center text-gray-900 mb-12">Nos outils d'évaluation</h3>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
               <CardHeader className="text-center">
                 <div className="mx-auto w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
@@ -117,6 +158,21 @@ export default function HomePage() {
                 <CardDescription className="text-center text-gray-600">
                   Répondez à 7 questions ciblées pour évaluer l'impact de l'IA sur vos tâches, compétences et conditions
                   de travail.
+                </CardDescription>
+              </CardContent>
+            </Card>
+
+            <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow">
+              <CardHeader className="text-center">
+                <div className="mx-auto w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+                  <Calculator className="h-6 w-6 text-green-600" />
+                </div>
+                <CardTitle className="text-xl">Score d'Exposition IA</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <CardDescription className="text-center text-gray-600">
+                  Calculez votre indice d'exposition à l'IA selon 4 dimensions : automatisation, compétences, activités
+                  et conditions.
                 </CardDescription>
               </CardContent>
             </Card>
